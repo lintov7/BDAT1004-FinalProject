@@ -1,0 +1,135 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	@*<style>
+		body {
+			background-image: url("https://wallpapercave.com/wp/wp2351071.jpg");
+		}
+	</style>*@
+	<script>
+		window.onload = function () 
+		{
+			countDataPoints = []
+			var chartthree = new CanvasJS.Chart("chartContainerthree",
+				{
+					exportEnabled: true,
+					animationEnabled: true,
+					theme: "light1",
+					title: {
+						text: "Total Counts"
+					},
+					legend: {
+						cursor: "pointer",
+						itemclick: explodePie
+					},
+					data: [{
+						type: "pie",
+						showInLegend: true,
+						toolTipContent: "{total}: <strong>{y}</strong>",
+						indexLabel: "{total} - {y}",
+						dataPoints: countDataPoints
+					}]
+				});
+			chartthree.render();
+			
+			$.getJSON("/api/listings/count", countData);
+
+			function countData(data) {
+				countDataPoints.push({
+						total:  "Total",
+						y: data.count
+				})
+				chartthree.render();
+			}
+
+
+			var barData = []
+
+			var chart = new CanvasJS.Chart("chartContainer", {
+				animationEnabled: true,
+				theme: "light1",
+				title: {
+					text: "Daily Sales Data"
+				},
+				axisY: {
+					title: "Units",
+					titleFontSize: 24,
+					includeZero: true
+				},
+				data: [{
+					type: "column",
+					yValueFormatString: "#,### Units",
+					dataPoints: barData
+				}]
+			});
+
+			function addData(data) {
+				for (var i = 0; i < data.length; i++) {
+					barData.push(
+						{
+							"label": data[i].name,
+							"y": data[i].count,
+						}
+					)
+				}
+
+				chart.render();
+			}
+
+			$.getJSON("/api/listings/roomtype", addData);
+
+
+			var charttwo = new CanvasJS.Chart("chartContainertwo", 
+			{
+				exportEnabled: true,
+				animationEnabled: true,
+				theme: "light1",
+				title: {
+					text: "State Operating Funds"
+				},
+				legend: {
+					cursor: "pointer",
+					itemclick: explodePie
+				},
+				data: [{
+					type: "pie",
+					showInLegend: true,
+					toolTipContent: "{room_type}: <strong>{y}%</strong>",
+					indexLabel: "{room_type} - {y}%",
+					dataPoints: [
+						{ y: 26, room_type: "School Aid", exploded: true },
+						{ y: 20, room_type: "Medical Aid" },
+						{ y: 5, room_type: "Debt/Capital" },
+						{ y: 3, room_type: "Elected Officials" },
+						{ y: 7, room_type: "University" },
+						{ y: 17, room_type: "Executive" },
+						{ y: 22, room_type: "Other Local Assistance" }
+					]
+				}]
+			});
+			charttwo.render();
+		}
+
+		function explodePie(e) {
+			if (typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+				e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+			} else {
+				e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+			}
+			e.charttwo.render();
+
+			
+
+		}
+	</script>
+</head>
+<body style="background-color:dimgrey">
+	@*<p style="text-align:center;;font-size:50px;color:white">Data Programming Air BnB Data</p>*@
+	<p style="text-align:center;font-family:cursive;font-size:56px;color:white"> The below is a Bar Graph representing Sales Data </p>
+	<div id="chartContainerthree" style="height: 370px; width: 100%;margin-top: 100px;"></div>
+	<div id="chartContainer" style="height: 370px; width: 100%;margin-top: 25px;"></div>
+	<div id="chartContainertwo" style="height: 370px; width: 100%;;margin-top: 25px;"></div>
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
