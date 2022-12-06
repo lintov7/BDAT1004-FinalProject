@@ -40,7 +40,7 @@ def downloadFileAndInsert():
 
 scheduler.start()
 
-# downloadFileAndInsert()
+downloadFileAndInsert()
 
 
 @app.route('/')
