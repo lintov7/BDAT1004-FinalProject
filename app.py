@@ -8,6 +8,7 @@ import json
 
 app = Flask(__name__, static_url_path='', static_folder='static',)
 
+server=app.server
 
 app.config["MONGO_URI"] = "mongodb+srv://linto_mongodb:BtAUQm3cbhms28WO@cluster0.x3jziue.mongodb.net/flask_db?retryWrites=true&w=majority"
 mongo = PyMongo(app)
@@ -91,3 +92,4 @@ def listingRoomType():
 @app.route("/api/listings/neighbourhood_price")
 def listingNeighbourhoodPrice():
     return "<p>Hello, Worfld!</p>"
+
