@@ -48,8 +48,13 @@ scheduler.start()
 def indexPage():
     return current_app.send_static_file('index.htm')
 
-@app.route("/api/listings/")
+@app.route("/api/listings/all")
 def getAll():
+    allLisiting = listings.find({})
+    return json.loads(json_util.dumps(allLisiting))
+
+@app.route("/api/listings/")
+def getRange():
     skipString = request.args.get('skip', '')
     skip = 0
     try: 
