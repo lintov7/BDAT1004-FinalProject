@@ -45,7 +45,7 @@ scheduler.start()
 
 @app.route('/')
 def indexPage():
-    return current_app.send_static_file('index.html')
+    return current_app.send_static_file('index.htm')
 
 @app.route("/api/listings/count")
 def listingCount():
